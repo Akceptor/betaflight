@@ -157,7 +157,7 @@ static bool vtxProcessBandAndChannel(vtxDevice_t *vtxDevice)
 #if defined(VTX_SETTINGS_FREQCMD)
 static bool vtxProcessFrequency(vtxDevice_t *vtxDevice)
 {
-    if (!ARMING_FLAG(ARMED)) {
+    // if (!ARMING_FLAG(ARMED)) { Allow when armed
         uint16_t vtxFreq;
         if (vtxCommonGetFrequency(vtxDevice, &vtxFreq)) {
             const vtxSettingsConfig_t settings = vtxGetSettings();
@@ -166,7 +166,7 @@ static bool vtxProcessFrequency(vtxDevice_t *vtxDevice)
                 return true;
             }
         }
-    }
+    // }
     return false;
 }
 #endif
@@ -278,7 +278,7 @@ void vtxUpdate(timeUs_t currentTimeUs)
             currentSchedule = (currentSchedule + 1) % VTX_PARAM_COUNT;
         } while (!vtxUpdatePending && currentSchedule != startingSchedule);
 
-        if (!ARMING_FLAG(ARMED) || vtxUpdatePending) {
+        if (/*!ARMING_FLAG(ARMED)*/ || vtxUpdatePending) {
             vtxCommonProcess(vtxDevice, currentTimeUs);
         }
     }
